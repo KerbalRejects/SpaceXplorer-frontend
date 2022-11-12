@@ -10,6 +10,8 @@ class Main extends React.Component{
     super(props);
     this.state = {
       location: '',
+      date:'',
+      time:'',
       lat: '',
       lon: '',
       showLocSearchModal: false,
@@ -39,6 +41,18 @@ class Main extends React.Component{
     this.setState({ showLocSearchModal: false });
   }
 
+  handleSearchLocation = (searchForm) => {
+    console.log(searchForm);
+    this.setState({ 
+      location: searchForm.location, 
+      date: searchForm.date.value,
+      time: searchForm.time
+     });
+     console.log(this.location);
+     console.log(this.date);
+     console.log(this.time);
+  }
+
   render() {
     return (
       <>
@@ -50,6 +64,7 @@ class Main extends React.Component{
       
         {this.state.showLocSearchModal &&
         <LocSearchModal
+          handleSearchLocation={this.handleSearchLocation}
           showLocSearchModal={this.state.showLocSearchModal}
           handleCloseLocSearchModal={this.handleCloseLocSearchModal}
         />}

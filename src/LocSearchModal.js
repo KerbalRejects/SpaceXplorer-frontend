@@ -5,6 +5,21 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 class LocSearchModal extends React.Component {
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("hello from Hexx");
+    const newSearch = {
+      location: e.target.formLocation.value,
+      date: e.target.formDate.value,
+      time: e.target.formTime.value,
+    }
+    console.log("youve been here ", newSearch );
+    this.props.handleSearchLocation(newSearch);
+  }
+
+
+
   render() {
     return (
 
@@ -20,7 +35,7 @@ class LocSearchModal extends React.Component {
 
             <Container>
 
-              <Form onSubmit={this.onSumbit}>
+              <Form onSubmit={this.handleSubmit}>
 
                 <Form.Group controlId='formLocation'>
                   <Form.Label>Enter your location</Form.Label>
@@ -35,13 +50,21 @@ class LocSearchModal extends React.Component {
                   <Form.Label>What Date are you searching for</Form.Label>
                   <Form.Control
                     required
-                    type='text'
+                    type='date'
+                  />
+                </Form.Group>
+
+                <Form.Group controlId='formTime'>
+                  <Form.Label>What Date are you searching for</Form.Label>
+                  <Form.Control
+                    required
+                    type='time'
                     placeholder='Enter your date (e.g. 2022-11-12)'
                   />
                 </Form.Group>
 
                 <br />
-                <Button type="submit">Search</Button>
+                <Button type="submit" >Search</Button>
 
               </Form>
 
