@@ -4,6 +4,8 @@ import React from 'react';
 import Main from './Main';
 // import Profile from './Profile';
 // import About from './About';
+import { withAuth0 } from '@auth0/auth0-react';
+import Login from './Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {
@@ -16,6 +18,7 @@ class App extends React.Component {
   render() {
     return (
       <>
+      {this.props.auth0.isAuthenticated ? <>
         <Router>
 
           {/* <Header /> */}
@@ -43,8 +46,11 @@ class App extends React.Component {
           
         </Router>
       </>
+      :
+      <Login/>}
+      </>
     )
   }
 }
 
-export default App;
+export default withAuth0(App);

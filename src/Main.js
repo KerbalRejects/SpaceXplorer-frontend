@@ -3,15 +3,15 @@ import './App.css';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import LocSearchModal from './LocSearchModal';
-// import { withAuth0 } from '@auth0/auth0-react';
+import { withAuth0 } from '@auth0/auth0-react';
 
-class Main extends React.Component{
+class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       location: '',
-      date:'',
-      time:'',
+      date: '',
+      time: '',
       lat: '',
       lon: '',
       showLocSearchModal: false,
@@ -20,19 +20,26 @@ class Main extends React.Component{
     }
   }
 
-  // componentDidMount = async () => {
-  //   const config = {
-  //     // FIXME: set default CRUD method
-  //     method: 'get',
-  //     baseURL: process.env.REACT_APP_SERVER,
-  //     // FIXME: set url endpoint
-  //     url: '/'
-  //   }
-  //   const response = await axios(config);
-  //   console.log('data: ', response.data);
-  //   // FIXME: verify this state is correct for app needs
-  //   this.setState({ locations: response.data }); 
-  // }
+  componentDidMount = async () => {
+
+    if (this.props.auth0.isAuthenticated) {
+      const res = await this.props.auth0.getIdTokenClaims();
+      const jwt = res.__raw;
+
+      console.log('token: ', jwt);
+
+      const config = {
+        headers: { "Authorization": `Bearer ${jwt}` },
+        method: 'get', // get is the default
+        baseURL: process.env.REACT_APP_SERVER,
+        url: '/' // endpoint
+      }
+
+      const response = await axios(config);
+      console.log('DATA: ', response.data);
+      this.setState({ locations: response.data });
+    }
+  }
 
   handleOpenLocSearchModal = (event) => {
     this.setState({ showLocSearchModal: true });
@@ -41,16 +48,26 @@ class Main extends React.Component{
     this.setState({ showLocSearchModal: false });
   }
 
-  handleSearchLocation = (searchForm) => {
-    console.log(searchForm);
-    this.setState({ 
-      location: searchForm.location, 
-      date: searchForm.date.value,
-      time: searchForm.time
-     });
-     console.log(this.location);
-     console.log(this.date);
-     console.log(this.time);
+  handleSearchLocation = async (searchForm) => {
+    console.log(searchForm.location);
+    this.setState({
+      location: searchForm.location,
+      date: searchForm.date,
+      time: searchForm.time,
+      showLocSearchModal: false
+    }, () => console.log(this.state));
+
+    const config = {
+      method: 'get',
+      baseURL: process.env.REACT_APP_SERVER,
+      url: `/location?location=${searchForm.location}`
+
+      // data: searchForm.location
+    }
+    console.log(config);
+    const response = await axios(config);
+    console.log(response);
+    this.setState({ locations: response.data });
   }
 
   render() {
@@ -59,19 +76,19 @@ class Main extends React.Component{
         <img src="https://via.placeholder.com/468x60" alt="SpaceX-plorer logo" title="SpaceX-plorer logo" />
         <h2>SpaceX-plorer</h2>
         <p>Ipsum lorem this what this page does</p>
-      
+
         <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
-      
+
         {this.state.showLocSearchModal &&
-        <LocSearchModal
-          handleSearchLocation={this.handleSearchLocation}
-          showLocSearchModal={this.state.showLocSearchModal}
-          handleCloseLocSearchModal={this.handleCloseLocSearchModal}
-        />}
-      
+          <LocSearchModal
+            handleSearchLocation={this.handleSearchLocation}
+            showLocSearchModal={this.state.showLocSearchModal}
+            handleCloseLocSearchModal={this.handleCloseLocSearchModal}
+          />}
+
       </>
     )
   }
 }
 
-export default Main;
+export default withAuth0(Main);
