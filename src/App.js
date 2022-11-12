@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
+// import Header from './Header';
+// import Footer from './Footer';
 import Main from './Main';
-import Profile from './Profile';
-import About from './About';
+// import Profile from './Profile';
+// import About from './About';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {
@@ -18,7 +18,7 @@ class App extends React.Component {
       <>
         <Router>
 
-          <Header />
+          {/* <Header /> */}
 
           <Routes>
 
@@ -27,19 +27,19 @@ class App extends React.Component {
               element={<Main />}
             ></Route>
 
-            <Route
+            {/* <Route
               path="/profile"
               element={<Profile />}
-            ></Route>
+            ></Route> */}
 
-            <Route
+            {/* <Route
               path='/about'
               element={<About />}
-            ></Route>
+            ></Route> */}
 
           </Routes>
 
-          <Footer />
+          {/* <Footer /> */}
           
         </Router>
       </>
