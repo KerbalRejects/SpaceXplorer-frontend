@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import LocSearchModal from './LocSearchModal';
 import { withAuth0 } from '@auth0/auth0-react';
 import Header from './Header'
+import Container from 'react-bootstrap/esm/Container';
 
 class Main extends React.Component {
   constructor(props) {
@@ -52,7 +53,7 @@ class Main extends React.Component {
   }
 
   handleSearchLocation = async (searchForm) => {
-    
+
     this.setState({
       location: searchForm.location,
       date: searchForm.date,
@@ -64,42 +65,43 @@ class Main extends React.Component {
       method: 'get',
       baseURL: process.env.REACT_APP_SERVER,
       url: `/location?location=${searchForm.location}&date=${searchForm.date}&time=${searchForm.time}`
-      
-      
+
+
     }
     console.log('handleSearchLocation config: ', config);
     const response = await axios(config);
     console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
-    this.setState({showLoader: 'visible'});
+    this.setState({ showLoader: 'visible' });
     setTimeout(() => {
-      this.setState({showLocData: true, showLoader: 'hidden'});
+      this.setState({ showLocData: true, showLoader: 'hidden' });
       console.log('Response in setState: ', this.state.locations);
     }, 5000);
-    
+
   }
 
   render() {
     return (
       <>
-        <Header/>
-        <h2>SpaceX-plorer</h2>
-        <p>Ipsum lorem this what this page does</p>
+        <Container fluid="md">
+          <Header />
+          <h2>SpaceX-plorer</h2>
+          <p>Ipsum lorem this what this page does</p>
 
-        <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+          <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
 
-        {this.state.showLocSearchModal &&
-          <LocSearchModal
-            handleSearchLocation={this.handleSearchLocation}
-            showLocSearchModal={this.state.showLocSearchModal}
-            handleCloseLocSearchModal={this.handleCloseLocSearchModal}
-          />}
+          {this.state.showLocSearchModal &&
+            <LocSearchModal
+              handleSearchLocation={this.handleSearchLocation}
+              showLocSearchModal={this.state.showLocSearchModal}
+              handleCloseLocSearchModal={this.handleCloseLocSearchModal}
+            />}
 
-        {this.state.showLocData ? 
-          <img src={this.state.locations[2].imageUrl} alt="starmap"/> : <div style={{visibility: this.state.showLoader}} class="loader"></div>
-          
-        }  
-        
+          {this.state.showLocData ?
+            <img src={this.state.locations[2].imageUrl} alt="starmap" /> : <div style={{ visibility: this.state.showLoader }} class="loader"></div>
+
+          }
+        </Container>
       </>
     )
   }
