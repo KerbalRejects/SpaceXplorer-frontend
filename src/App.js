@@ -2,8 +2,9 @@ import React from 'react'
 // import Header from './Header';
 // import Footer from './Footer';
 import Main from './Components/Main';
-// import Profile from './Profile';
+import Profile from './Components/Profile';
 import About from './Components/About';
+import Header from './Components/Header';
 import { withAuth0 } from '@auth0/auth0-react';
 import Login from './Components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,22 +20,21 @@ class App extends React.Component {
   render() {
     return (
       <>
+        <Header/>
+      {console.log(this.props.auth0.isAuthenticated)}
       {this.props.auth0.isAuthenticated ? <>
-        <Router>
-
+        
           {/* <Header /> */}
-
           <Routes>
-
             <Route
               path='/'
               element={<Main />}
             ></Route>
 
-            {/* <Route
+            <Route
               path="/profile"
               element={<Profile />}
-            ></Route> */}
+            ></Route>
 
             <Route
               path='/about'
@@ -45,7 +45,7 @@ class App extends React.Component {
 
           {/* <Footer /> */}
           
-        </Router>
+        
       </>
       :
       <Login/>

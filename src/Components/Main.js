@@ -82,7 +82,7 @@ class Main extends React.Component {
   render() {
     return (
       <>
-        <Header/>
+        
         <h2>SpaceX-plorer</h2>
         <p>Ipsum lorem this what this page does</p>
 
