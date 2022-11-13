@@ -1,0 +1,20 @@
+// LOGIN.JS
+
+@import url('https://fonts.googleapis.com/css2?family=Trispace:wght@300&display=swap');
+
+#loginPage {
+    background-color: #212529;
+    background-size: cover;
+}
+
+#btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 15rem;
+}
+
+#btn > .btn {
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: 'Trispace', sans-serif;
+}
