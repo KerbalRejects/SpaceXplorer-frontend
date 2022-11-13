@@ -4,9 +4,21 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import './CSS/Header.scss'; 
+import { useAuth0 } from "@auth0/auth0-react";
+import { Link  } from "react-router-dom";
 
-class Header extends React.Component {
-    render () {
+const Header = (props) => {
+
+    const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+
+    function handleCheck(){
+        if(!isAuthenticated){
+            loginWithRedirect()
+        }
+    }
+
+    
+
         return(
             <Navbar bg="dark" expand="lg">
                 <Container>
@@ -14,11 +26,11 @@ class Header extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/about">About</Nav.Link>
-                            <Nav.Link href="/profile">Profile</Nav.Link>
+                        <Nav.Link as = {Link} to = '/' onClick = {handleCheck}>Home</Nav.Link>
+                            <Nav.Link as = {Link} to = '/about' onClick = {handleCheck}>About</Nav.Link>
+                            <Nav.Link as = {Link} to = '/profile' onClick = {handleCheck}>Profile</Nav.Link>
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+                                <NavDropdown.Item onClick = {() => {logout({ returnTo: window.location.origin })}}>Logout</NavDropdown.Item>
                                 <NavDropdown.Item href="/login">Login</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
@@ -35,6 +47,6 @@ class Header extends React.Component {
     }
     
 
-}
+
 
 export default Header;
