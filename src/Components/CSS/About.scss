@@ -4,7 +4,9 @@
 #aboutPage {
   background-image: url('https://images-assets.nasa.gov/image/hubble-peers-into-the-mouth-of-leo-a_25841335574_o/hubble-peers-into-the-mouth-of-leo-a_25841335574_o~orig.jpg');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 #team {
