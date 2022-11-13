@@ -8,17 +8,14 @@ class LocSearchModal extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hello from Hexx");
     const newSearch = {
       location: e.target.formLocation.value,
       date: e.target.formDate.value,
       time: e.target.formTime.value,
     }
-    console.log("youve been here ", newSearch );
+    console.log("handletSubmit() newSearch: ", newSearch );
     this.props.handleSearchLocation(newSearch);
   }
-
-
 
   render() {
     return (
@@ -47,7 +44,7 @@ class LocSearchModal extends React.Component {
                 </Form.Group>
 
                 <Form.Group controlId='formDate'>
-                  <Form.Label>What Date are you searching for</Form.Label>
+                  <Form.Label>What date are you searching for?</Form.Label>
                   <Form.Control
                     required
                     type='date'
@@ -55,11 +52,10 @@ class LocSearchModal extends React.Component {
                 </Form.Group>
 
                 <Form.Group controlId='formTime'>
-                  <Form.Label>What Date are you searching for</Form.Label>
+                  <Form.Label>What time are you searching for?</Form.Label>
                   <Form.Control
                     required
                     type='time'
-                    placeholder='Enter your date (e.g. 2022-11-12)'
                   />
                 </Form.Group>
 
@@ -72,11 +68,11 @@ class LocSearchModal extends React.Component {
 
           </Modal.Body>
 
-          <Modal.Footer>
+          {/* <Modal.Footer>
             <Button onClick={this.props.handleCloseLocSearchModal}>
               Close
             </Button>
-          </Modal.Footer>
+          </Modal.Footer> */}
 
         </Modal >
 

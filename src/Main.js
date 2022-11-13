@@ -49,24 +49,35 @@ class Main extends React.Component {
   }
 
   handleSearchLocation = async (searchForm) => {
-    console.log(searchForm.location);
+
     this.setState({
       location: searchForm.location,
       date: searchForm.date,
       time: searchForm.time,
       showLocSearchModal: false
-    }, () => console.log(this.state));
+    }, () => console.log('this.state: ', this.state));
+
+    // const config = {
+    //   method: 'get',
+    //   baseURL: process.env.REACT_APP_SERVER,
+    //   url: `/location?location=${searchForm.location}`
+    //   // data: searchForm.location
+    // }
+    // console.log('handleSearchLocation config: ', config);
+    // const response = await axios(config);
+    // console.log('handleSearchLocation response', response);
+    // this.setState({ locations: response.data });
 
     const config = {
       method: 'get',
       baseURL: process.env.REACT_APP_SERVER,
-      url: `/location?location=${searchForm.location}`
-
-      // data: searchForm.location
+      url: `/location?location=${searchForm.location}&date=${searchForm.date}&time=${searchForm.time}`
+      // data: searchForm
+      
     }
-    console.log(config);
+    console.log('handleSearchLocation config: ', config);
     const response = await axios(config);
-    console.log(response);
+    console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
   }
 
