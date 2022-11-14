@@ -16,7 +16,6 @@ class LocSearchModal extends React.Component {
 
 handleSubmit = (e) => {
   e.preventDefault();
-  console.log("hello from Hexx");
   const newSearch = {
     location: e.target.formLocation.value,
     date: e.target.formDate.value,
@@ -59,7 +58,7 @@ render() {
                 <Form.Control
                   required
                   type='date'
-                  value={this.state.currentDate}
+                  defaultValue={this.state.currentDate}
                 />
               </Form.Group>
               <br />
@@ -68,7 +67,7 @@ render() {
                 <Form.Control
                   required
                   type='time'
-                  value={this.state.currentTime}
+                  defaultValue={this.state.currentTime}
                 />
               </Form.Group>
 

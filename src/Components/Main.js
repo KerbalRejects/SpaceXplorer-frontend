@@ -6,6 +6,9 @@ import LocSearchModal from './LocSearchModal';
 import { withAuth0 } from '@auth0/auth0-react';
 import Header from './Header'
 import Container from 'react-bootstrap/esm/Container';
+import Col from 'react-bootstrap/esm/Col';
+import Row from 'react-bootstrap/esm/Row';
+import SearchResults from './SearchResults';
 
 class Main extends React.Component {
   constructor(props) {
@@ -83,24 +86,42 @@ class Main extends React.Component {
   render() {
     return (
       <>
+
+        <Header />
+
         <Container fluid="md">
-          <Header />
-          <h2>SpaceX-plorer</h2>
-          <p>Ipsum lorem this what this page does</p>
 
-          <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+          <Row lg>
+            <p>Ipsum lorem this what this page does</p>
+            <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+          </Row>
 
-          {this.state.showLocSearchModal &&
-            <LocSearchModal
-              handleSearchLocation={this.handleSearchLocation}
-              showLocSearchModal={this.state.showLocSearchModal}
-              handleCloseLocSearchModal={this.handleCloseLocSearchModal}
-            />}
+          <Row>
+            {this.state.showLocSearchModal &&
+              <LocSearchModal
+                handleSearchLocation={this.handleSearchLocation}
+                showLocSearchModal={this.state.showLocSearchModal}
+                handleCloseLocSearchModal={this.handleCloseLocSearchModal}
+              />}
 
-          {this.state.showLocData ?
-            <img src={this.state.locations[2].imageUrl} alt="starmap" /> : <div style={{ visibility: this.state.showLoader }} class="loader"></div>
+            {/* {this.state.showLocData ?
+              <img src={this.state.locations[2].imageUrl} alt="starmap" /> : <div style={{ visibility: this.state.showLoader }} class="loader"></div>
 
-          }
+            } */}
+
+            {this.state.showLocData ?
+              <>
+                <img src={this.state.locations[2].imageUrl} alt="starmap" />
+                <SearchResults locations={this.state.locations} />
+              </>
+              :
+              <>
+                <div style={{ visibility: this.state.showLoader }} class="loader"></div>
+              </>
+            }
+
+          </Row>
+
         </Container>
       </>
     )
