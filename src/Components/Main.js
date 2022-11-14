@@ -68,10 +68,10 @@ class Main extends React.Component {
       
     }
     console.log('handleSearchLocation config: ', config);
+    this.setState({showLoader: 'visible'});
     const response = await axios(config);
     console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
-    this.setState({showLoader: 'visible'});
     setTimeout(() => {
       this.setState({showLocData: true, showLoader: 'hidden'});
       console.log('Response in setState: ', this.state.locations);
@@ -82,18 +82,24 @@ class Main extends React.Component {
   render() {
     return (
       <>
-        
-        <h2>SpaceX-plorer</h2>
-        <p>Ipsum lorem this what this page does</p>
-
-        <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
-
-        {this.state.showLocSearchModal &&
+      
+          <div>
+            <h2>SpaceX-plorer</h2>
+            <p>Ipsum lorem this what this page does</p>
+    
+            <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+          </div>
+        {
+          this.handleOpenLocSearchModal &&
+          
           <LocSearchModal
-            handleSearchLocation={this.handleSearchLocation}
-            showLocSearchModal={this.state.showLocSearchModal}
-            handleCloseLocSearchModal={this.handleCloseLocSearchModal}
-          />}
+          handleSearchLocation={this.handleSearchLocation}
+          showLocSearchModal={this.state.showLocSearchModal}
+          handleCloseLocSearchModal={this.handleCloseLocSearchModal}
+        />
+
+        }
+      
 
         {this.state.showLocData ? 
           <img src={this.state.locations[2].imageUrl} alt="starmap"/> : <div style={{visibility: this.state.showLoader}} class="loader"></div>
