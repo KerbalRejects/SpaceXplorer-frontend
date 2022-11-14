@@ -1,10 +1,10 @@
 import React from 'react';
-import './CSS/Main.scss';
+import favorite from './Favorite'
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import Loader from './Loader';
 import LocSearchModal from './LocSearchModal';
 import { withAuth0 } from '@auth0/auth0-react';
-import Header from './Header'
 
 class Main extends React.Component {
   constructor(props) {
@@ -20,6 +20,8 @@ class Main extends React.Component {
       showLoader: 'hidden',
       errorMsg: '',
       locations: [],
+      favorites:[],
+      favoriteConfig: {}
     }
   }
 
@@ -57,7 +59,8 @@ class Main extends React.Component {
       location: searchForm.location,
       date: searchForm.date,
       time: searchForm.time,
-      showLocSearchModal: false
+      showLocSearchModal: false,
+      showLocData: false
     }, () => console.log('this.state: ', this.state));
 
     const config = {
@@ -68,17 +71,47 @@ class Main extends React.Component {
       
     }
     console.log('handleSearchLocation config: ', config);
+    this.setState({showLoader: 'visible'});
     const response = await axios(config);
     console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
-    this.setState({showLoader: 'visible'});
+    
     setTimeout(() => {
       this.setState({showLocData: true, showLoader: 'hidden'});
-      console.log('Response in setState: ', this.state.locations);
+      
+      console.log('Response in setState: ', this.state.locations, 'Response in setState for favorite config: ', this.state.favoriteConfig);
     }, 5000);
     
   }
+  
+  handleCreateFavorite = async () => {
+    
+      
+   
+    console.log(this.favorite())
+    try {
+      if (this.props.auth0.isAuthenticated) {
+        const response = await this.props.auth0.getIdTokenClaims();
+        const jwt = response.__raw;
+  
+        console.log('token: ', jwt);
+  
+        const config = {
+          headers: { "Authorization": `Bearer ${jwt}` }, // new lab 15
+          method: 'post',
+          baseURL: process.env.REACT_APP_SERVER,
+          url: '/favorites',
+          data: this.favorite()
+        }
+      
 
+      const res = await axios(config);
+      this.setState({ favorites: [...this.state.favorites, res.data] });
+    }} catch(err) {
+      console.error('Error is in the Main.js in the createFavorite Function: ', err);
+      this.setState({ errMessage: `Status Code ${err.res.status}: ${err.res.data}`});
+    }
+  }
   render() {
     return (
       <>
@@ -95,9 +128,13 @@ class Main extends React.Component {
             handleCloseLocSearchModal={this.handleCloseLocSearchModal}
           />}
 
-        {this.state.showLocData ? 
-          <img src={this.state.locations[2].imageUrl} alt="starmap"/> : <div style={{visibility: this.state.showLoader}} class="loader"></div>
-          
+        {this.state.showLocData ?
+          <>
+          <img src={this.state.locations[2].imageUrl} alt="starmap"/> 
+          <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
+          </> 
+          : 
+          <Loader visibility={this.state.showLoader}/>
         }  
         
       </>
