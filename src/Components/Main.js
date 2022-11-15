@@ -1,10 +1,15 @@
 import React from 'react';
-import './CSS/Main.scss';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import Loader from './Loader';
 import LocSearchModal from './LocSearchModal';
 import { withAuth0 } from '@auth0/auth0-react';
 import Header from './Header'
+import Container from 'react-bootstrap/esm/Container';
+import Col from 'react-bootstrap/esm/Col';
+import Row from 'react-bootstrap/esm/Row';
+import SearchResults from './SearchResults';
+
 
 class Main extends React.Component {
   constructor(props) {
@@ -20,6 +25,8 @@ class Main extends React.Component {
       showLoader: 'hidden',
       errorMsg: '',
       locations: [],
+      favorites:[],
+      favoriteConfig: {}
     }
   }
 
@@ -52,60 +59,119 @@ class Main extends React.Component {
   }
 
   handleSearchLocation = async (searchForm) => {
-    
+
     this.setState({
       location: searchForm.location,
       date: searchForm.date,
       time: searchForm.time,
-      showLocSearchModal: false
+      showLocSearchModal: false,
+      showLocData: false
     }, () => console.log('this.state: ', this.state));
 
     const config = {
       method: 'get',
       baseURL: process.env.REACT_APP_SERVER,
       url: `/location?location=${searchForm.location}&date=${searchForm.date}&time=${searchForm.time}`
-      
-      
+
+
     }
     console.log('handleSearchLocation config: ', config);
     this.setState({showLoader: 'visible'});
     const response = await axios(config);
     console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
+
     setTimeout(() => {
       this.setState({showLocData: true, showLoader: 'hidden'});
       console.log('Response in setState: ', this.state.locations);
     }, 5000);
-    
+
   }
-
-  render() {
-    return (
-      <>
+  
+  handleCreateFavorite = async () => {
+    console.log(this.props.auth0.user.email)
+    const postConfig = {
+      email: `${this.props.auth0.user.email}`,
+      isFavorited: true,
+      favorites: {
+          location: `${this.state.locations[0][0].locationName}`,
+          date: `${this.state.locations[0][0].cacheDate}`,
+          astroData: {
+                  astroMap: `${this.state.locations[2].imageUrl}`,
+                  lat: `${this.state.locations[0][0].locationLat}`, 
+                  lon: `${this.state.locations[0][0].locationLon}`,
+                  },
+          weather: {
+                  desc: `${this.state.locations[3][0].description}`, 
+                  lowTemp: `${this.state.locations[3][0].min_temp}`, 
+                  highTemp: `${this.state.locations[3][0].high_temp}`
+                  },
+          comment: ''
+      }
+    } 
+  console.log(postConfig)
       
-          <div>
-            <h2>SpaceX-plorer</h2>
-            <p>Ipsum lorem this what this page does</p>
+   
     
-            <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
-          </div>
-        {
-          this.handleOpenLocSearchModal &&
-          
-          <LocSearchModal
-          handleSearchLocation={this.handleSearchLocation}
-          showLocSearchModal={this.state.showLocSearchModal}
-          handleCloseLocSearchModal={this.handleCloseLocSearchModal}
-        />
-
+    try {
+      if (this.props.auth0.isAuthenticated) {
+        const response = await this.props.auth0.getIdTokenClaims();
+        const jwt = response.__raw;
+  
+        console.log('token: ', jwt);
+  
+        const config = {
+          headers: { "Authorization": `Bearer ${jwt}` }, // new lab 15
+          method: 'post',
+          baseURL: process.env.REACT_APP_SERVER,
+          url: '/favorites',
+          data: postConfig
         }
       
 
-        {this.state.showLocData ? 
-          <img src={this.state.locations[2].imageUrl} alt="starmap"/> : <div style={{visibility: this.state.showLoader}} class="loader"></div>
-          
-        }  
-        
+      const res = await axios(config);
+      this.setState({ favorites: [...this.state.favorites, res.data] });
+    }} catch(err) {
+      console.error('Error is in the Main.js in the createFavorite Function: ', err);
+      this.setState({ errMessage: `Status Code ${err.res.status}: ${err.res.data}`});
+    }
+  }
+  render() {
+    return (
+      <>
+        <Container fluid="md">
+
+            <p>`Hello {this.props.auth0.user.name}! Welcome to SpaceX-(plorer). This app was created as a one-stop portal where you can plan your stargazing adventure. Simply login, set your search criteria, and you'll be presented with everything you need to know, mainly: what is in the sky, and what the weather will be.`</p>
+
+            <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+
+            {this.state.showLocSearchModal &&
+              <LocSearchModal
+                handleSearchLocation={this.handleSearchLocation}
+                showLocSearchModal={this.state.showLocSearchModal}
+                handleCloseLocSearchModal={this.handleCloseLocSearchModal}
+              />}
+
+            {/* {this.state.showLocData ?
+              <img src={this.state.locations[2].imageUrl} alt="starmap" /> : <div style={{ visibility: this.state.showLoader }} class="loader"></div>
+
+            } */}
+
+            {this.state.showLocData ?
+              <>
+                <img src={this.state.locations[2].imageUrl} alt="starmap" />
+                <SearchResults locations={this.state.locations} />
+                <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
+              </>
+              :
+              <>
+                <Loader />
+              </>
+            }
+
+
+        </Container>
+
       </>
     )
   }
