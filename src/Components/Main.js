@@ -3,7 +3,13 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Loader from './Loader';
 import LocSearchModal from './LocSearchModal';
-import { withAuth0, useAuth0 } from '@auth0/auth0-react';
+import { withAuth0 } from '@auth0/auth0-react';
+import Header from './Header'
+import Container from 'react-bootstrap/esm/Container';
+import Col from 'react-bootstrap/esm/Col';
+import Row from 'react-bootstrap/esm/Row';
+import SearchResults from './SearchResults';
+
 
 class Main extends React.Component {
   constructor(props) {
@@ -53,7 +59,7 @@ class Main extends React.Component {
   }
 
   handleSearchLocation = async (searchForm) => {
-    
+
     this.setState({
       location: searchForm.location,
       date: searchForm.date,
@@ -66,21 +72,21 @@ class Main extends React.Component {
       method: 'get',
       baseURL: process.env.REACT_APP_SERVER,
       url: `/location?location=${searchForm.location}&date=${searchForm.date}&time=${searchForm.time}`
-      
-      
+
+
     }
     console.log('handleSearchLocation config: ', config);
     this.setState({showLoader: 'visible'});
     const response = await axios(config);
     console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
+
     
     setTimeout(() => {
       this.setState({showLocData: true, showLoader: 'hidden'});
-      
-      console.log('Response in setState: ', this.state.locations, 'Response in setState for favorite config: ', this.state.favoriteConfig);
+      console.log('Response in setState: ', this.state.locations);
     }, 5000);
-    
+
   }
   
   handleCreateFavorite = async () => {
@@ -134,28 +140,42 @@ class Main extends React.Component {
   render() {
     return (
       <>
-        
-        <h2>SpaceX-plorer</h2>
-        <p>Ipsum lorem this what this page does</p>
+        <Container fluid="md">
 
-        <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+          <Row lg>
+            <p>Ipsum lorem this what this page does</p>
+            <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+          </Row>
 
-        {this.state.showLocSearchModal &&
-          <LocSearchModal
-            handleSearchLocation={this.handleSearchLocation}
-            showLocSearchModal={this.state.showLocSearchModal}
-            handleCloseLocSearchModal={this.handleCloseLocSearchModal}
-          />}
+          <Row>
+            {this.state.showLocSearchModal &&
+              <LocSearchModal
+                handleSearchLocation={this.handleSearchLocation}
+                showLocSearchModal={this.state.showLocSearchModal}
+                handleCloseLocSearchModal={this.handleCloseLocSearchModal}
+              />}
 
-        {this.state.showLocData ?
-          <>
-          <img src={this.state.locations[2].imageUrl} alt="starmap"/> 
-          <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
-          </> 
-          : 
-          <Loader visibility={this.state.showLoader}/>
-        }  
-        
+            {/* {this.state.showLocData ?
+              <img src={this.state.locations[2].imageUrl} alt="starmap" /> : <div style={{ visibility: this.state.showLoader }} class="loader"></div>
+
+            } */}
+
+            {this.state.showLocData ?
+              <>
+                <img src={this.state.locations[2].imageUrl} alt="starmap" />
+                <SearchResults locations={this.state.locations} />
+                <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
+              </>
+              :
+              <>
+                <div style={{ visibility: this.state.showLoader }} class="loader"></div>
+              </>
+            }
+
+          </Row>
+
+        </Container>
+
       </>
     )
   }
