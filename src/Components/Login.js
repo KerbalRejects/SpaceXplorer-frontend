@@ -6,17 +6,18 @@ import Header from './Header'
 import Footer from './Footer'
 
 
-const LoginButton = () => {
+const Login = () => {
   const { loginWithRedirect } = useAuth0();
   return (
     <>
       <div id="loginPage">
-        <Header/>
+        
       
         <img id="loginImage" src="" alt=""/>
         <div id="btn">
           <Button onClick={() => loginWithRedirect()}>Log In</Button>
-        </div>
+        </div> 
+        
         <Footer/>
       </div>
       
@@ -27,4 +28,4 @@ const LoginButton = () => {
   
   );
 };
-export default LoginButton;
+export default Login;

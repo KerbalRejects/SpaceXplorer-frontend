@@ -87,8 +87,6 @@ class Main extends React.Component {
     return (
       <>
 
-        <Header />
-
         <Container fluid="md">
 
           <Row lg>
@@ -113,6 +111,7 @@ class Main extends React.Component {
               <>
                 <img src={this.state.locations[2].imageUrl} alt="starmap" />
                 <SearchResults locations={this.state.locations} />
+                <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
               </>
               :
               <>
@@ -123,6 +122,7 @@ class Main extends React.Component {
           </Row>
 
         </Container>
+
       </>
     )
   }
