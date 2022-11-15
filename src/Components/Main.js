@@ -78,7 +78,6 @@ class Main extends React.Component {
     console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
 
-    
     setTimeout(() => {
       this.setState({showLocData: true, showLoader: 'hidden'});
       console.log('Response in setState: ', this.state.locations);
@@ -139,12 +138,11 @@ class Main extends React.Component {
       <>
         <Container fluid="md">
 
-          
-            <p>Ipsum lorem this what this page does</p>
-            <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
-          
 
-          
+            <p>`Hello {this.props.auth0.user.name}! Welcome to SpaceX-(plorer). This app was created as a one-stop portal where you can plan your stargazing adventure. Simply login, set your search criteria, and you'll be presented with everything you need to know, mainly: what is in the sky, and what the weather will be.`</p>
+
+            <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
+
             {this.state.showLocSearchModal &&
               <LocSearchModal
                 handleSearchLocation={this.handleSearchLocation}
@@ -168,12 +166,12 @@ class Main extends React.Component {
               </>
               :
               <>
+
                 <Loader visibility={this.state.showLoader}/>
               </>
             }
 
-          
-
+       
         </Container>
 
       </>
