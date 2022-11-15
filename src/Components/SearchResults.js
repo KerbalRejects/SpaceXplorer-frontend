@@ -13,11 +13,11 @@ class SearchResults extends React.Component {
 
           <Accordion.Item eventKey="1">
             <Accordion.Header>Weather Forecast for your location: {this.props.locations[0][0].locationName}</Accordion.Header>
-            <Accordion.Body>
+            {/* <Accordion.Body>
               Date: {this.props.locations[3][0].date}<br />
               Forecast: {this.props.locations[3][0].description}
-            </Accordion.Body>
-            {/* <Accordion.Body>
+            </Accordion.Body> */}
+            <Accordion.Body>
               <Row>
                 {this.props.locations.slice(3, 4).map(curForecast => (
                   <Col>
@@ -27,7 +27,7 @@ class SearchResults extends React.Component {
                   </Col>
                 ))}
               </Row>
-            </Accordion.Body> */}
+            </Accordion.Body>
           </Accordion.Item>
 
           <Accordion.Item eventKey="2">
@@ -51,20 +51,20 @@ class SearchResults extends React.Component {
   }
 }
 
-// class Forecast extends Component {
-//   render() {
-//     console.log('forecast :', this.props.forecast);
-//     const forecast = this.props.forecast;
-//     return (
-//       <Card key={forecast.date}>
-//         <Card.Body>
-//           <Card.Text><b>Date</b>: {forecast.date}</Card.Text>
-//           <Card.Text><b>Forecast</b>: {forecast.description}</Card.Text>
-//         </Card.Body>
-//       </Card>
-//     );
-//   }
-// }
+class Forecast extends Component {
+  render() {
+    console.log('forecast :', this.props.forecast);
+    const forecast = this.props.forecast;
+    return (
+      <Card key={forecast.date}>
+        <Card.Body>
+          <Card.Text><b>Date</b>: {forecast.date}</Card.Text>
+          <Card.Text><b>Forecast</b>: {forecast.description}</Card.Text>
+        </Card.Body>
+      </Card>
+    );
+  }
+}
 
 class AstroObject extends Component {
   render() {

@@ -4,12 +4,9 @@ import Button from 'react-bootstrap/Button';
 import Loader from './Loader';
 import LocSearchModal from './LocSearchModal';
 import { withAuth0 } from '@auth0/auth0-react';
-import Header from './Header'
 import Container from 'react-bootstrap/esm/Container';
-import Col from 'react-bootstrap/esm/Col';
-import Row from 'react-bootstrap/esm/Row';
 import SearchResults from './SearchResults';
-
+import './CSS/Main.scss'
 
 class Main extends React.Component {
   constructor(props) {
@@ -142,12 +139,12 @@ class Main extends React.Component {
       <>
         <Container fluid="md">
 
-          <Row lg>
+          
             <p>Ipsum lorem this what this page does</p>
             <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
-          </Row>
+          
 
-          <Row>
+          
             {this.state.showLocSearchModal &&
               <LocSearchModal
                 handleSearchLocation={this.handleSearchLocation}
@@ -164,15 +161,18 @@ class Main extends React.Component {
               <>
                 <img src={this.state.locations[2].imageUrl} alt="starmap" />
                 <SearchResults locations={this.state.locations} />
-                <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
+                <div className="searchBtn">
+                  <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
+                </div>
+                
               </>
               :
               <>
-                <div style={{ visibility: this.state.showLoader }} class="loader"></div>
+                <Loader visibility={this.state.showLoader}/>
               </>
             }
 
-          </Row>
+          
 
         </Container>
 
