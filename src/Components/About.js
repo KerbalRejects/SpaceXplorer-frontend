@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+
 import './CSS/About.scss';
 
 class About extends React.Component {

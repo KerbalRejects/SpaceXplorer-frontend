@@ -1,7 +1,7 @@
 import React from 'react';
-import './CSS/Main.scss';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import Loader from './Loader';
 import LocSearchModal from './LocSearchModal';
 import { withAuth0 } from '@auth0/auth0-react';
 import Header from './Header'
@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/esm/Container';
 import Col from 'react-bootstrap/esm/Col';
 import Row from 'react-bootstrap/esm/Row';
 import SearchResults from './SearchResults';
+
 
 class Main extends React.Component {
   constructor(props) {
@@ -24,6 +25,8 @@ class Main extends React.Component {
       showLoader: 'hidden',
       errorMsg: '',
       locations: [],
+      favorites:[],
+      favoriteConfig: {}
     }
   }
 
@@ -61,7 +64,8 @@ class Main extends React.Component {
       location: searchForm.location,
       date: searchForm.date,
       time: searchForm.time,
-      showLocSearchModal: false
+      showLocSearchModal: false,
+      showLocData: false
     }, () => console.log('this.state: ', this.state));
 
     const config = {
@@ -72,21 +76,70 @@ class Main extends React.Component {
 
     }
     console.log('handleSearchLocation config: ', config);
+    this.setState({showLoader: 'visible'});
     const response = await axios(config);
     console.log('handleSearchLocation response', response);
     this.setState({ locations: response.data });
-    this.setState({ showLoader: 'visible' });
+
+    
     setTimeout(() => {
-      this.setState({ showLocData: true, showLoader: 'hidden' });
+      this.setState({showLocData: true, showLoader: 'hidden'});
       console.log('Response in setState: ', this.state.locations);
     }, 5000);
 
   }
+  
+  handleCreateFavorite = async () => {
+    console.log(this.props.auth0.user.email)
+    const postConfig = {
+      email: `${this.props.auth0.user.email}`,
+      isFavorited: true,
+      favorites: {
+          location: `${this.state.locations[0][0].locationName}`,
+          date: `${this.state.locations[0][0].cacheDate}`,
+          astroData: {
+                  astroMap: `${this.state.locations[2].imageUrl}`,
+                  lat: `${this.state.locations[0][0].locationLat}`, 
+                  lon: `${this.state.locations[0][0].locationLon}`,
+                  },
+          weather: {
+                  desc: `${this.state.locations[3][0].description}`, 
+                  lowTemp: `${this.state.locations[3][0].min_temp}`, 
+                  highTemp: `${this.state.locations[3][0].high_temp}`
+                  },
+          comment: ''
+      }
+    } 
+  console.log(postConfig)
+      
+   
+    
+    try {
+      if (this.props.auth0.isAuthenticated) {
+        const response = await this.props.auth0.getIdTokenClaims();
+        const jwt = response.__raw;
+  
+        console.log('token: ', jwt);
+  
+        const config = {
+          headers: { "Authorization": `Bearer ${jwt}` }, // new lab 15
+          method: 'post',
+          baseURL: process.env.REACT_APP_SERVER,
+          url: '/favorites',
+          data: postConfig
+        }
+      
 
+      const res = await axios(config);
+      this.setState({ favorites: [...this.state.favorites, res.data] });
+    }} catch(err) {
+      console.error('Error is in the Main.js in the createFavorite Function: ', err);
+      this.setState({ errMessage: `Status Code ${err.res.status}: ${err.res.data}`});
+    }
+  }
   render() {
     return (
       <>
-
         <Container fluid="md">
 
           <Row lg>
