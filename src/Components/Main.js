@@ -4,12 +4,9 @@ import Button from 'react-bootstrap/Button';
 import Loader from './Loader';
 import LocSearchModal from './LocSearchModal';
 import { withAuth0 } from '@auth0/auth0-react';
-import Header from './Header'
 import Container from 'react-bootstrap/esm/Container';
-import Col from 'react-bootstrap/esm/Col';
-import Row from 'react-bootstrap/esm/Row';
 import SearchResults from './SearchResults';
-
+import './CSS/Main.scss'
 
 class Main extends React.Component {
   constructor(props) {
@@ -141,6 +138,7 @@ class Main extends React.Component {
       <>
         <Container fluid="md">
 
+
             <p>`Hello {this.props.auth0.user.name}! Welcome to SpaceX-(plorer). This app was created as a one-stop portal where you can plan your stargazing adventure. Simply login, set your search criteria, and you'll be presented with everything you need to know, mainly: what is in the sky, and what the weather will be.`</p>
 
             <Button variant="primary" onClick={this.handleOpenLocSearchModal}>Search your location</Button>
@@ -161,15 +159,19 @@ class Main extends React.Component {
               <>
                 <img src={this.state.locations[2].imageUrl} alt="starmap" />
                 <SearchResults locations={this.state.locations} />
-                <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
+                <div className="searchBtn">
+                  <Button variant="primary" onClick={this.handleCreateFavorite}></Button>
+                </div>
+                
               </>
               :
               <>
-                <Loader />
+
+                <Loader visibility={this.state.showLoader}/>
               </>
             }
 
-
+       
         </Container>
 
       </>

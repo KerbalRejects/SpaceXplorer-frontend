@@ -13,7 +13,6 @@ class SearchResults extends React.Component {
 
           <Accordion.Item eventKey="1">
             <Accordion.Header>Weather Forecast for your location: {this.props.locations[0][0].locationName}</Accordion.Header>
-
             <Accordion.Body>
               <Row>
                 {Object.values(this.props.locations[3]).map(curForecast => (
