@@ -6,84 +6,92 @@ import Modal from 'react-bootstrap/Modal';
 
 class LocSearchModal extends React.Component {
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("hello from Hexx");
-    const newSearch = {
-      location: e.target.formLocation.value,
-      date: e.target.formDate.value,
-      time: e.target.formTime.value,
+  constructor() {
+    super();
+    this.state={
+      currentDate: new Date().toISOString().slice(0,10),
+      currentTime: new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' })
     }
-    console.log("handletSubmit() newSearch: ", newSearch );
-    this.props.handleSearchLocation(newSearch);
   }
 
+handleSubmit = (e) => {
+  e.preventDefault();
+  const newSearch = {
+    location: e.target.formLocation.value,
+    date: e.target.formDate.value,
+    time: e.target.formTime.value,
+  }
+  console.log("handletSubmit() newSearch: ", newSearch);
+  this.props.handleSearchLocation(newSearch);
+}
 
+render() {
+  return (
 
-  render() {
-    return (
+    <>
 
-      <>
+      <Modal show={this.props.showLocSearchModal} onHide={this.props.handleCloseLocSearchModal}>
 
-        <Modal show={this.props.showLocSearchModal} onHide={this.props.handleCloseLocSearchModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>SOME TITLE GOES HERE</Modal.Title>
+        </Modal.Header>
 
-          <Modal.Header closeButton>
-            <Modal.Title>SOME TITLE GOES HERE</Modal.Title>
-          </Modal.Header>
+        <Modal.Body>
 
-          <Modal.Body>
+          <Container>
 
-            <Container>
+            <Form onSubmit={this.handleSubmit}>
 
-              <Form onSubmit={this.handleSubmit}>
+            <Form.Label>Where and when do you want to know what's up there?</Form.Label>
 
-                <Form.Group controlId='formLocation'>
-                  <Form.Label>Enter your location</Form.Label>
-                  <Form.Control
-                    required
-                    type='text'
-                    placeholder='Enter your location (e.g. Seattle)'
-                  />
-                </Form.Group>
+              <Form.Group controlId='formLocation'>
+                <Form.Label>Enter your location</Form.Label>
+                <Form.Control
+                  required
+                  type='text'
+                  placeholder='Enter your location (e.g. Seattle)'
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId='formDate'>
+                <Form.Label>What date? (defaults to your current date)</Form.Label>
+                <Form.Control
+                  required
+                  type='date'
+                  defaultValue={this.state.currentDate}
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId='formTime'>
+                <Form.Label>What time of day/night? (defaults to your current time)</Form.Label>
+                <Form.Control
+                  required
+                  type='time'
+                  defaultValue={this.state.currentTime}
+                />
+              </Form.Group>
 
-                <Form.Group controlId='formDate'>
-                  <Form.Label>What date are you searching for?</Form.Label>
-                  <Form.Control
-                    required
-                    type='date'
-                  />
-                </Form.Group>
+              <br />
+              <Button type="submit" >Search</Button>
 
-                <Form.Group controlId='formTime'>
-                  <Form.Label>What time are you searching for?</Form.Label>
-                  <Form.Control
-                    required
-                    type='time'
-                    placeholder='Enter your date (e.g. 2022-11-12)'
-                  />
-                </Form.Group>
+            </Form>
 
-                <br />
-                <Button type="submit" >Search</Button>
+          </Container>
 
-              </Form>
+        </Modal.Body>
 
-            </Container>
-
-          </Modal.Body>
-
-          {/* <Modal.Footer>
+        {/* <Modal.Footer>
             <Button onClick={this.props.handleCloseLocSearchModal}>
               Close
             </Button>
           </Modal.Footer> */}
 
-        </Modal >
+      </Modal >
 
-      </>
+    </>
 
-    )
-  }
+  )
+}
 }
 
 export default LocSearchModal;
