@@ -1,10 +1,9 @@
 import React from 'react';
-import favorite from './Favorite'
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Loader from './Loader';
 import LocSearchModal from './LocSearchModal';
-import { withAuth0 } from '@auth0/auth0-react';
+import { withAuth0, useAuth0 } from '@auth0/auth0-react';
 
 class Main extends React.Component {
   constructor(props) {
@@ -85,10 +84,30 @@ class Main extends React.Component {
   }
   
   handleCreateFavorite = async () => {
-    
+    console.log(this.props.auth0.user.email)
+    const postConfig = {
+      email: `${this.props.auth0.user.email}`,
+      isFavorited: true,
+      favorites: {
+          location: `${this.state.locations[0][0].locationName}`,
+          date: `${this.state.locations[0][0].cacheDate}`,
+          astroData: {
+                  astroMap: `${this.state.locations[2].imageUrl}`,
+                  lat: `${this.state.locations[0][0].locationLat}`, 
+                  lon: `${this.state.locations[0][0].locationLon}`,
+                  },
+          weather: {
+                  desc: `${this.state.locations[3][0].description}`, 
+                  lowTemp: `${this.state.locations[3][0].min_temp}`, 
+                  highTemp: `${this.state.locations[3][0].high_temp}`
+                  },
+          comment: ''
+      }
+    } 
+  console.log(postConfig)
       
    
-    console.log(this.favorite())
+    
     try {
       if (this.props.auth0.isAuthenticated) {
         const response = await this.props.auth0.getIdTokenClaims();
@@ -101,7 +120,7 @@ class Main extends React.Component {
           method: 'post',
           baseURL: process.env.REACT_APP_SERVER,
           url: '/favorites',
-          data: this.favorite()
+          data: postConfig
         }
       
 
