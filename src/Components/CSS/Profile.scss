@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Trispace:wght@300&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+.profileBody {
+    background-image: url('https://images-assets.nasa.gov/image/hubble-peers-into-the-mouth-of-leo-a_25841335574_o/hubble-peers-into-the-mouth-of-leo-a_25841335574_o~orig.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.cardDiv {
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 15px;
+}
+
+.profileCard{
+    font-family: 'Trispace', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px 15px 15px 15px;
+    box-shadow: rgba(255, 255, 255, 0.24) 0px 3px 8px;
+    width: 250px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: #212529;
+    color: #F9F6EE;
+}
+
+.profileCard > h2{
+    margin: 10px 0;
+    font-size: larger;
+}
+.profileCard > h5 {
+    margin: 10px 0;
+    font-size: medium;
+}
+.card {
+    border-radius: 15px 15px 15px 15px;
+    box-shadow: rgba(255, 255, 255, 0.24) 0px 3px 8px;
+}
+.card-body {
+    font-family: 'Trispace', sans-serif;
+    background-color: #212529;
+    
+}
+.card-text {
+    color: #F9F6EE;
+}
+
+
+

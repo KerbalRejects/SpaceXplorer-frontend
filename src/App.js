@@ -1,6 +1,5 @@
 import React from 'react'
-// import Header from './Header';
-// import Footer from './Footer';
+import Footer from './Components/Footer';
 import Main from './Components/Main';
 import Profile from './Components/Profile';
 import About from './Components/About';
@@ -44,7 +43,7 @@ class App extends React.Component {
 
           {/* <Footer /> */}
           
-        
+        <Footer />
       </>
       :
       <Login/>

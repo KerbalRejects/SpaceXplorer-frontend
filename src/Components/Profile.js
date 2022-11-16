@@ -2,15 +2,14 @@ import { withAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import React from 'react';
 import Card from 'react-bootstrap/esm/Card';
-import Col from 'react-bootstrap/esm/Col';
-import Row from 'react-bootstrap/esm/Row';
-
+import Container from 'react-bootstrap/Container'
+import './CSS/Profile.scss'
 class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            favorites: {}
+            favorites: []
 
         }
     }
@@ -34,35 +33,40 @@ class Profile extends React.Component {
     }
 
     render() {
-        const favorites = this.props.favorites;
         return (
-            <>
-                <article>
-                    {this.props.auth0.user.picture && <img src={this.props.auth0.user.picture} alt={this.props.auth0.user?.name} />}
-                    <h2>{this.props.auth0.user?.name}</h2>
-                    <div>
-                        <p classname='email'>{this.props.auth0.user.email}</p>
-                        {/* {Object.keys(user).map((objKey, i) => <li key={i}>{objKey}: {user[objKey]} </li>)} */}
+            <body className="profileBody">
+                <Container>
+                    
+                    <div className="cardDiv">
+                        <div className="profileCard">
+                            <img src={this.props.auth0.user.picture} alt=""/>
+                            <h2>{this.props.auth0.user?.name}</h2>
+                            <h5>{this.props.auth0.user.email}</h5>
+                        </div>
                     </div>
-
-                    <container>
-                        {Object.keys(this.state.favorites).length ?(
-                            <Card className="h-100">
-                            {console.log('asdfasdf' + this.state.favorites.favorites.astroData.astroMap)}
+                    
+                    <Container>
+                        {this.state.favorites.length ?(
+                            <Card style={{ width: '18rem' }}>
+                            {/* {console.log('asdfasdf' + this.state.favorites.favorites.astroData.astroMap)} */}
+                            <Card.Img variant="top" src={this.state.favorites[5].favorites.astroData.astroMap} alt='astroMap'/>
                             <Card.Body>
-                                <Card.Title>{this.props.auth0.name}{this.state.favorites.date}</Card.Title>
-                                <Card.Text><img src=`${this.state.favorites.astroData.astroMap}` alt='astroMap' /></Card.Text>
-                                <Card.Text>Date: {this.props.locations[3][0].date}<br />
-                                    Forecast: {this.props.locations[3][0].description}</Card.Text>
-                                <Card.Text>{this.state.favorites.comment}</Card.Text>
+                                <Card.Title>{this.props.auth0.name}{this.state.favorites[0].date}</Card.Title>
+                                <Card.Text>Location: {this.state.favorites[5].favorites.location}</Card.Text>
+                                <Card.Text>Date: {this.state.favorites[5].favorites.date}</Card.Text>
+                                <Card.Text>Forecast: {this.state.favorites[5].favorites.weather.desc}</Card.Text>
+                                <Card.Text>High temp: {this.state.favorites[5].favorites.weather.highTemp}</Card.Text>
+                                <Card.Text>High temp: {this.state.favorites[5].favorites.weather.lowTemp}</Card.Text>
+                                    
+                                <Card.Text>{this.state.favorites[0].comment}</Card.Text>
                             </Card.Body>
                         </Card>)
                         : (
-                            <h3>You Have No Favorites...loser.</h3>
+                            <h3>You Have No Favorites.</h3>
                         )}
-                    </container>
-                </article>
-            </>
+                    </Container>
+                </Container>
+            </body>
         )
     }
 }
