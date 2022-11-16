@@ -8,7 +8,7 @@ import Footer from './Footer'
 const Login = () => {
   const { loginWithRedirect } = useAuth0();
   return (
-    <>
+    
       <div id="loginPage">
         
       
@@ -19,12 +19,7 @@ const Login = () => {
         
         <Footer/>
       </div>
-      
 
-    </>
-  
-  
-  
   );
 };
 export default Login;

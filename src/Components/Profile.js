@@ -10,10 +10,8 @@ class Profile extends React.Component {
         this.state = {
             email: '',
             favorites: []
-
         }
     }
-
     componentDidMount = async () => {
         if (this.props.auth0.isAuthenticated) {
             const res = await this.props.auth0.getIdTokenClaims();
@@ -22,19 +20,17 @@ class Profile extends React.Component {
             console.log(jwt);
             const config = {
                 headers: { "Authorization": `Bearer ${jwt}` },
-                method: 'get', // get is the default
+                method: 'get', 
                 baseURL: process.env.REACT_APP_SERVER,
                 url: '/profile'
             }
             const response = await axios(config);
-            console.log('DATA:', response.data);
             this.setState({ favorites: response.data })
         }
     }
-
     render() {
         return (
-            <body className="profileBody">
+            <div className="profileBody">
                 <Container>
                     
                     <div className="cardDiv">
@@ -48,7 +44,6 @@ class Profile extends React.Component {
                     <Container>
                         {this.state.favorites.length ?(
                             <Card style={{ width: '18rem' }}>
-                            {/* {console.log('asdfasdf' + this.state.favorites.favorites.astroData.astroMap)} */}
                             <Card.Img variant="top" src={this.state.favorites[5].favorites.astroData.astroMap} alt='astroMap'/>
                             <Card.Body>
                                 <Card.Title>{this.props.auth0.name}{this.state.favorites[0].date}</Card.Title>
@@ -57,16 +52,15 @@ class Profile extends React.Component {
                                 <Card.Text>Forecast: {this.state.favorites[5].favorites.weather.desc}</Card.Text>
                                 <Card.Text>High temp: {this.state.favorites[5].favorites.weather.highTemp}</Card.Text>
                                 <Card.Text>High temp: {this.state.favorites[5].favorites.weather.lowTemp}</Card.Text>
-                                    
-                                <Card.Text>{this.state.favorites[0].comment}</Card.Text>
+                                <Card.Text>{this.state.favorites[0].favorites.comment}</Card.Text>
                             </Card.Body>
                         </Card>)
                         : (
-                            <h3>You Have No Favorites.</h3>
+                            <h3 className="error">You Have No Favorites.</h3>
                         )}
                     </Container>
                 </Container>
-            </body>
+            </div>
         )
     }
 }

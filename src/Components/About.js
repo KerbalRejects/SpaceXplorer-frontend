@@ -7,18 +7,13 @@ class About extends React.Component {
     render() {
         return (
             <div id="aboutPage">
-
                 <div id="team">
                     <h1 >Meet the Team</h1>
+                    <h2>KerbalRejects</h2>
                 </div>
                 <div id="aboutBody">
-
                     <div className="container">
-
                         <div className="card" >
-
-                            
-
                             <div className="face face1">
                                 <div className="content">
 
@@ -31,7 +26,6 @@ class About extends React.Component {
                                 <h2>Gaz</h2>
                             </div>
                         </div>
-
                         <div className="card">
                             <div className="face face1">
                                 <div className="content">
@@ -45,7 +39,6 @@ class About extends React.Component {
                                 <h2>Ethan</h2>
                             </div>
                         </div>
-
                         <div className="card">
                             <div className="face face1">
                                 <div className="content">
@@ -59,7 +52,6 @@ class About extends React.Component {
                                 <h2>Manuch</h2>
                             </div>
                         </div>
-
                         <div className="card">
                             <div className="face face1">
                                 <div className="content">

@@ -8,17 +8,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link  } from "react-router-dom";
 
 const Header = (props) => {
-
     const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
-
     function handleCheck(){
         if(!isAuthenticated){
             loginWithRedirect()
         }
     }
-
-    
-
         return(
             <Navbar bg="dark" expand="lg">
                 <Container>
@@ -37,16 +32,6 @@ const Header = (props) => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            // <>
-            
-            //     <h1> Auth0 Login</h1>
-            //     {/* <LoginButton />
-            //     <LogoutButton /> */}
-            // </>
         )
     }
-    
-
-
-
 export default Header;
