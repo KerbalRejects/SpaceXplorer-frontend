@@ -18,6 +18,7 @@ class Profile extends React.Component {
             showCommentModal: false,
 
 
+
         }
     }
 
@@ -72,7 +73,10 @@ class Profile extends React.Component {
         }
     }
 
-    handleUpdatefavorite = async (favoriteToBeUpdated) => {
+    handleUpdatefavorite = async (e) => {
+        e.preventDefault();
+        console.log(e.target.commentForm.value);
+        const favoriteToBeUpdated = e.target.commentForm.value;
         this.handleCloseCommentModal();
         if (this.props.auth0.isAuthenticated) {
             const res = await this.props.auth0.getIdTokenClaims();
@@ -86,10 +90,10 @@ class Profile extends React.Component {
                     headers: { "Authorization": `Bearer ${jwt}` },
                     method: 'put',
                     baseURL: process.env.REACT_APP_SERVER,
-                    url: `/profile/${favoriteToBeUpdated._id}`,
-                    data: favoriteToBeUpdated
+                    url: `/profile/${this.state.favoriteToBeUpdated._id}`,
+                    data:  e.target.commentForm.value
                 }
-
+                        console.log(config);
                 const response = await axios(config);
                 console.log(response.data);
                 const updatedFavorite = this.state.favorites.map(preExistingFavorite => {
@@ -108,9 +112,13 @@ class Profile extends React.Component {
         }
     }
 
-    handleOpenCommentModal = (event) => {
-        this.setState({ showCommentModal: true });
+    handleOpenCommentModal = (favorite) => {
+        this.setState({ showCommentModal: true,
+            favoriteToBeUpdated: favorite
+         });
     }
+
+
     handleCloseCommentModal = (event) => {
         this.setState({ showCommentModal: false });
     }
@@ -135,7 +143,7 @@ class Profile extends React.Component {
                                     placeholder='add comments!'
                                 />
                             </Form.Group>
-                            <Button type="submit">Comment</Button>
+                            <Button type="submit" >Comment</Button>
                         </Form>
 
                     </Modal>
@@ -165,7 +173,9 @@ class Profile extends React.Component {
                                     <Card.Text>High temp: {this.state.favorites[i].favorites.weather.highTemp}</Card.Text>
                                     <Card.Text>High temp: {this.state.favorites[i].favorites.weather.lowTemp}</Card.Text>
 
-                                    <Card.Text>{this.state.favorites[i].comment}</Card.Text>
+                                    <Card.Text>{this.state.favorites[i].favorites.comment}</Card.Text>
+
+                                    <Button onClick={() => this.handleOpenCommentModal(favorite)}>Comment!</Button>
                                 
                                     <Button onClick={() => this.handleDeleteFavorites(favorite)}>Delete</Button>
                                 </Card.Body>
