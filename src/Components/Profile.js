@@ -16,12 +16,8 @@ class Profile extends React.Component {
             email: '',
             favorites: [],
             showCommentModal: false,
-
-
-
         }
     }
-
     componentDidMount = async () => {
         if (this.props.auth0.isAuthenticated) {
             const res = await this.props.auth0.getIdTokenClaims();
@@ -30,15 +26,15 @@ class Profile extends React.Component {
             console.log(jwt);
             const config = {
                 headers: { "Authorization": `Bearer ${jwt}` },
-                method: 'get', // get is the default
+                method: 'get', 
                 baseURL: process.env.REACT_APP_SERVER,
                 url: '/profile'
             }
             const response = await axios(config);
-            console.log('DATA:', response.data);
             this.setState({ favorites: response.data })
         }
     }
+
 
     handleDeleteFavorites = async (favoriteToBeDeleted) => {
 
@@ -129,7 +125,7 @@ class Profile extends React.Component {
     render() {
         return (
 
-            <body className="profileBody">
+            <div className="profileBody">
                 <>
                     <Modal show={this.state.showCommentModal} onHide={this.handleCloseCommentModal}>
 
@@ -161,6 +157,7 @@ class Profile extends React.Component {
 
               {this.state.favorites.map((favorite, i) =>
                     <Container>
+
                         {this.state.favorites.length ? (
                             <Card style={{ width: '18rem' }} key={favorite._id}>
                                 {/* {console.log('asdfasdf' + this.state.favorites.favorites.astroData.astroMap)} */}
@@ -183,11 +180,13 @@ class Profile extends React.Component {
                             : (
                                 <h3>You Have No Favorites.</h3>
                             )}
+
                     </Container>
               )}
                 </Container>
 
-            </body>
+            </div>
+
         )
     }
 }

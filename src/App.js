@@ -7,11 +7,7 @@ import Header from './Components/Header';
 import { withAuth0 } from '@auth0/auth0-react';
 import Login from './Components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-import {
-  Routes,
-  Route
+import {Routes, Route
 } from "react-router-dom";
 
 class App extends React.Component {
@@ -19,30 +15,12 @@ class App extends React.Component {
     return (
       <>
         <Header/>
-      {console.log(this.props.auth0.isAuthenticated)}
       {this.props.auth0.isAuthenticated ? <>
-        
-          {/* <Header /> */}
           <Routes>
-            <Route
-              path='/'
-              element={<Main />}
-            ></Route>
-
-            <Route
-              path="/profile"
-              element={<Profile />}
-            ></Route>
-
-            <Route
-              path='/about'
-              element={<About />}
-            ></Route>
-
-          </Routes>
-
-          {/* <Footer /> */}
-          
+            <Route path='/' element={<Main />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path='/about' element={<About />}></Route>
+          </Routes> 
         <Footer />
       </>
       :

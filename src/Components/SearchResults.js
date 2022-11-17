@@ -49,7 +49,6 @@ class SearchResults extends React.Component {
 
 class Forecast extends Component {
   render() {
-    console.log('forecast :', this.props.forecast);
     const forecast = this.props.forecast;
     const iconUrl = `https://www.weatherbit.io/static/img/icons/${forecast.icon}.png`;
     // epoch time conversion borrowed from https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
