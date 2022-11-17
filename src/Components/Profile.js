@@ -25,9 +25,7 @@ class Profile extends React.Component {
     componentDidMount = async () => {
         if (this.props.auth0.isAuthenticated) {
             const res = await this.props.auth0.getIdTokenClaims();
-            console.log(res);
             const jwt = res.__raw;
-            console.log(jwt);
             const config = {
                 headers: { "Authorization": `Bearer ${jwt}` },
                 method: 'get', 
