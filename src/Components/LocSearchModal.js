@@ -21,7 +21,6 @@ handleSubmit = (e) => {
     date: e.target.formDate.value,
     time: e.target.formTime.value,
   }
-  console.log("handletSubmit() newSearch: ", newSearch);
   this.props.handleSearchLocation(newSearch);
 }
 
