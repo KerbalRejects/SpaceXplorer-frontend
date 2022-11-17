@@ -57,7 +57,7 @@ class About extends React.Component {
                                 <div className="content">
 
                                     <h2 className="Chris">Christopher Lopez</h2>
-                                    <p className="Chris"></p>
+                                    <p className="Chris">I am a Full-Stack Software Developer with many years working in customer service. I am a lifelong learner with a strong growth mindset, I am ever ready to expand my knowledge and skillset and am very interested in expanding my education and bringing a positive influence to the industry.</p>
                                     <img className="img" src="https://i.imgur.com/XejsiqA.png" alt="Christopher Lopez"></img>
                                 </div>
                             </div>

@@ -27,23 +27,15 @@ handleSubmit = (e) => {
 
 render() {
   return (
-
     <>
-
       <Modal show={this.props.showLocSearchModal} onHide={this.props.handleCloseLocSearchModal}>
-
         <Modal.Header closeButton>
           <Modal.Title>SOME TITLE GOES HERE</Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
-
           <Container>
-
             <Form onSubmit={this.handleSubmit}>
-
             <Form.Label>Where and when do you want to know what's up there?</Form.Label>
-
               <Form.Group controlId='formLocation'>
                 <Form.Label>Enter your location</Form.Label>
                 <Form.Control
@@ -70,26 +62,13 @@ render() {
                   defaultValue={this.state.currentTime}
                 />
               </Form.Group>
-
               <br />
               <Button type="submit" >Search</Button>
-
             </Form>
-
           </Container>
-
         </Modal.Body>
-
-        {/* <Modal.Footer>
-            <Button onClick={this.props.handleCloseLocSearchModal}>
-              Close
-            </Button>
-          </Modal.Footer> */}
-
       </Modal >
-
     </>
-
   )
 }
 }

@@ -7,7 +7,7 @@ import { withAuth0 } from '@auth0/auth0-react';
 import Container from 'react-bootstrap/esm/Container';
 import SearchResults from './SearchResults';
 import './CSS/Main.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 class Main extends React.Component {
   constructor(props) {
@@ -27,7 +27,6 @@ class Main extends React.Component {
       favoriteConfig: {}
     }
   }
-
   componentDidMount = async () => {
 
     if (this.props.auth0.isAuthenticated) {
@@ -70,6 +69,7 @@ class Main extends React.Component {
     }, 5000);
   }
   handleCreateFavorite = async () => {
+    window.alert("You have favorited this search!")
     const postConfig = {
       email: `${this.props.auth0.user.email}`,
       isFavorited: true,
@@ -117,7 +117,6 @@ class Main extends React.Component {
             <Button onClick={this.handleOpenLocSearchModal}>Search your location</Button>
           </div>
             <p className="welcome">Hello {this.props.auth0.user.name}! Welcome to SpaceXplorer. This app was created as a one-stop portal where you can plan your stargazing adventure. Simply login, set your search criteria, and you'll be presented with everything you need to know, mainly: what is in the sky, and what the weather will be.</p>
-            
             {this.state.showLocSearchModal &&
               <LocSearchModal
                 handleSearchLocation={this.handleSearchLocation}
@@ -129,16 +128,13 @@ class Main extends React.Component {
                 <div class="center-box">
                   <div class="animated-border-box-glow"></div>
                   <div class="animated-border-box">
-                    <img  src={this.state.locations[2].imageUrl} alt="starmap" />
+                    <img src={this.state.locations[2].imageUrl} alt="starmap" />
                   </div>
                 </div>
                 <div className="favBtn">
                 <Button variant="primary" onClick={this.handleCreateFavorite}>Favorite search</Button>
                 </div>
                 <SearchResults locations={this.state.locations} />
-                
-                  
-                
               </>
               :
               <Loader visibility={this.state.showLoader}/>

@@ -8,7 +8,9 @@ import { Button } from 'react-bootstrap';
 
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { update } from 'react-spring';
+import Col from 'react-bootstrap/esm/Col';
+import Row from 'react-bootstrap/esm/Row';
+
 
 class Profile extends React.Component {
     constructor(props) {
@@ -44,9 +46,6 @@ class Profile extends React.Component {
             const res = await this.props.auth0.getIdTokenClaims();
             const jwt = res.__raw;
 
-            // leave this console here in order to grab your token for backend testing in Thunder Client
-            console.log('token: ', jwt);
-
             try {
                 const proceed = window.confirm('Do you wish to delete?');
 
@@ -58,8 +57,7 @@ class Profile extends React.Component {
                         url: `/profile/${favoriteToBeDeleted._id}`
                     }
 
-                    const response = await axios(config);
-                    console.log(response.data);
+                    await axios(config);
                     const updateFavorites = this.state.favorites.filter(favorites => favorites._id !== favoriteToBeDeleted._id);
                     this.setState({ favorites: updateFavorites });
                 }
@@ -74,17 +72,13 @@ class Profile extends React.Component {
     handleUpdatefavorite = async (e) => {
         e.preventDefault();
         
-        console.log(this.state.favoriteToBeUpdated)
-        console.log(e.target.commentForm.value);
         const favoriteToBeUpdated = e.target.commentForm.value;
         this.handleCloseCommentModal();
         if (this.props.auth0.isAuthenticated) {
             const res = await this.props.auth0.getIdTokenClaims();
             const jwt = res.__raw;
 
-            // leave this console here in order to grab your token for backend testing in Thunder Client
-            console.log('token: ', jwt);
-            console.log(this.state.favoriteToBeUpdated)
+
             try {
                 const config = {
                     headers: { "Authorization": `Bearer ${jwt}` },
@@ -108,12 +102,12 @@ class Profile extends React.Component {
                     
                       }
                 }
-                console.log(config);
+            
                 const response = await axios(config);
-                console.log(response.data);
                 const updatedFavorite = this.state.favorites.map(preExistingFavorite => {
-                    if (preExistingFavorite._id === favoriteToBeUpdated._id) {
-                        return favoriteToBeUpdated;
+                    if (preExistingFavorite._id === response.data._id) {
+                        
+                        return response.data;
                     } else {
                         return preExistingFavorite;
                     }
@@ -121,7 +115,7 @@ class Profile extends React.Component {
                 
                 
                 this.setState({ favorites: updatedFavorite });
-                
+
                 
                 
             } catch (error) {
@@ -147,8 +141,7 @@ class Profile extends React.Component {
         
     }
 
-    handleSubmit = e => e.preventDefault();
-
+    
 
     render() {
         return (
@@ -182,13 +175,12 @@ class Profile extends React.Component {
                             <h5>{this.props.auth0.user.email}</h5>
                         </div>
                     </div>
-
+                    <Row sm={1} md={2} lg={3} xl={4} xxl={5}>
               {this.state.favorites.map((favorite, i) =>
                     <Container>
-
+                        <Col>
                         {this.state.favorites.length ? (
                             <Card style={{ width: '18rem' }} key={favorite._id}>
-                                {/* {console.log('asdfasdf' + this.state.favorites.favorites.astroData.astroMap)} */}
                                 <Card.Img variant="top" src={this.state.favorites[i].favorites.astroData.astroMap} alt='astroMap' />
                                 <Card.Body>
                                     <Card.Title>{this.props.auth0.name}{this.state.favorites[i].date}</Card.Title>
@@ -199,17 +191,19 @@ class Profile extends React.Component {
                                     <Card.Text>High temp: {this.state.favorites[i].favorites.weather.lowTemp}</Card.Text>
 
                                     <Card.Text>{this.state.favorites[i].favorites.comment}</Card.Text>
-                                    <Button onClick={() => this.handleOpenCommentModal(favorite)}>Comment!</Button>
+                                    <Button className="comment"onClick={() => this.handleOpenCommentModal(favorite)}>Comment</Button>
                                 
-                                    <Button onClick={() => this.handleDeleteFavorites(favorite)}>Delete</Button>
+                                    <Button className="delete"onClick={() => this.handleDeleteFavorites(favorite)}>Delete</Button>
                                 </Card.Body>
                             </Card>)
                             : (
                                 <h3>You Have No Favorites.</h3>
                             )}
-
+                        </Col>
                     </Container>
+
               )}
+                </Row>
                 </Container>
 
             </div>
@@ -217,5 +211,6 @@ class Profile extends React.Component {
         )
     }
 }
+
 
 export default withAuth0(Profile);
