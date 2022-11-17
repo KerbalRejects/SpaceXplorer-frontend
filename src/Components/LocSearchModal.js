@@ -29,7 +29,7 @@ render() {
     <>
       <Modal show={this.props.showLocSearchModal} onHide={this.props.handleCloseLocSearchModal}>
         <Modal.Header closeButton>
-          <Modal.Title>SOME TITLE GOES HERE</Modal.Title>
+          <Modal.Title>Search</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
