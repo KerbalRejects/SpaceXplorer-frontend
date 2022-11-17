@@ -5,9 +5,10 @@ import Card from 'react-bootstrap/esm/Card';
 import Container from 'react-bootstrap/Container'
 import './CSS/Profile.scss'
 import { Button } from 'react-bootstrap';
-import { faV } from '@fortawesome/free-solid-svg-icons';
+
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { update } from 'react-spring';
 
 class Profile extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class Profile extends React.Component {
             email: '',
             favorites: [],
             showCommentModal: false,
+            favoriteToBeUpdated: {}
         }
     }
     componentDidMount = async () => {
@@ -68,9 +70,11 @@ class Profile extends React.Component {
             }
         }
     }
-
+    
     handleUpdatefavorite = async (e) => {
         e.preventDefault();
+        
+        console.log(this.state.favoriteToBeUpdated)
         console.log(e.target.commentForm.value);
         const favoriteToBeUpdated = e.target.commentForm.value;
         this.handleCloseCommentModal();
@@ -80,16 +84,31 @@ class Profile extends React.Component {
 
             // leave this console here in order to grab your token for backend testing in Thunder Client
             console.log('token: ', jwt);
-
+            console.log(this.state.favoriteToBeUpdated)
             try {
                 const config = {
                     headers: { "Authorization": `Bearer ${jwt}` },
                     method: 'put',
                     baseURL: process.env.REACT_APP_SERVER,
                     url: `/profile/${this.state.favoriteToBeUpdated._id}`,
-                    data:  e.target.commentForm.value
+                    data:  {
+                        email: this.state.favoriteToBeUpdated.favorites.email,
+                        isFavorited: true,
+                        favorites: {
+                          astroData: {
+                            astroMap: this.state.favoriteToBeUpdated.favorites.astroData.astroMap,
+                            lat: this.state.favoriteToBeUpdated.favorites.astroData.lat,
+                            lon: this.state.favoriteToBeUpdated.favorites.astroData.lon
+                          },
+                          weather: { desc: this.state.favoriteToBeUpdated.favorites.weather.desc, lowTemp: this.state.favoriteToBeUpdated.favorites.weather.lowTemp, highTemp: this.state.favoriteToBeUpdated.favorites.weather.highTemp },
+                          location: this.state.favoriteToBeUpdated.favorites.location,
+                          date: this.state.favoriteToBeUpdated.favorites.date,
+                          comment: favoriteToBeUpdated
+                        },
+                    
+                      }
                 }
-                        console.log(config);
+                console.log(config);
                 const response = await axios(config);
                 console.log(response.data);
                 const updatedFavorite = this.state.favorites.map(preExistingFavorite => {
@@ -99,7 +118,12 @@ class Profile extends React.Component {
                         return preExistingFavorite;
                     }
                 })
+                
+                
                 this.setState({ favorites: updatedFavorite });
+                
+                
+                
             } catch (error) {
                 console.error('Error is in the profile.js in the updateFavorite Function: ', error);
                 // axios sends more info about the error in a response object on the error
@@ -111,12 +135,16 @@ class Profile extends React.Component {
     handleOpenCommentModal = (favorite) => {
         this.setState({ showCommentModal: true,
             favoriteToBeUpdated: favorite
+            
          });
+        
     }
 
 
     handleCloseCommentModal = (event) => {
         this.setState({ showCommentModal: false });
+        
+        
     }
 
     handleSubmit = e => e.preventDefault();
@@ -171,7 +199,6 @@ class Profile extends React.Component {
                                     <Card.Text>High temp: {this.state.favorites[i].favorites.weather.lowTemp}</Card.Text>
 
                                     <Card.Text>{this.state.favorites[i].favorites.comment}</Card.Text>
-
                                     <Button onClick={() => this.handleOpenCommentModal(favorite)}>Comment!</Button>
                                 
                                     <Button onClick={() => this.handleDeleteFavorites(favorite)}>Delete</Button>
