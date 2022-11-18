@@ -186,7 +186,7 @@ class Profile extends React.Component {
                                     <Card.Text>Date: {this.state.favorites[i].favorites.date}</Card.Text>
                                     <Card.Text>Forecast: {this.state.favorites[i].favorites.weather.desc}</Card.Text>
                                     <Card.Text>High temp: {this.state.favorites[i].favorites.weather.highTemp}</Card.Text>
-                                    <Card.Text>High temp: {this.state.favorites[i].favorites.weather.lowTemp}</Card.Text>
+                                    <Card.Text>Low temp: {this.state.favorites[i].favorites.weather.lowTemp}</Card.Text>
 
                                     <Card.Text>{this.state.favorites[i].favorites.comment}</Card.Text>
                                     <Button className="comment"onClick={() => this.handleOpenCommentModal(favorite)}>Comment</Button>
