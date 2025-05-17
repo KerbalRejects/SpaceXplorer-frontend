@@ -11,10 +11,7 @@ root.render(
     <Auth0Provider
       domain={import.meta.env.VITE_DOMAIN}
       clientId={import.meta.env.VITE_CLIENTID}
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-        audience: import.meta.env.VITE_DOMAIN
-      }}
+      redirectUri={window.location.origin}
     >
       <Router>
         <App />
