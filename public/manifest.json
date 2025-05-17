@@ -1,8 +1,6 @@
 {
   "short_name": "SpaceXplorer",
   "name": "SpaceXplorer",
-  "short_name": "React App",
-  "name": "Create React App Sample",
   "icons": [],
   "start_url": ".",
   "display": "standalone",
