@@ -25,7 +25,13 @@ const Header = (props) => {
                             <Nav.Link as = {Link} to = '/about' onClick = {handleCheck}>About</Nav.Link>
                             <Nav.Link as = {Link} to = '/profile' onClick = {handleCheck}>Profile</Nav.Link>
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
-                                <NavDropdown.Item onClick = {() => {logout({ returnTo: window.location.origin })}}>Logout</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => {
+                                    logout({ 
+                                        logoutParams: {
+                                            returnTo: window.location.origin
+                                        }
+                                    })
+                                }}>Logout</NavDropdown.Item>
                                 <NavDropdown.Item href="/login">Login</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
