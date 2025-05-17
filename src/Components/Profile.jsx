@@ -29,7 +29,7 @@ class Profile extends React.Component {
             const config = {
                 headers: { "Authorization": `Bearer ${jwt}` },
                 method: 'get', 
-                baseURL: process.env.REACT_APP_SERVER,
+                baseURL: import.meta.env.VITE_APP_SERVER,
                 url: '/profile'
             }
             const response = await axios(config);
@@ -51,7 +51,7 @@ class Profile extends React.Component {
                     const config = {
                         headers: { "Authorization": `Bearer ${jwt}` },
                         method: 'delete',
-                        baseURL: process.env.REACT_APP_SERVER,
+                        baseURL: import.meta.env.VITE_APP_SERVER,
                         url: `/profile/${favoriteToBeDeleted._id}`
                     }
 
@@ -81,7 +81,7 @@ class Profile extends React.Component {
                 const config = {
                     headers: { "Authorization": `Bearer ${jwt}` },
                     method: 'put',
-                    baseURL: process.env.REACT_APP_SERVER,
+                    baseURL: import.meta.env.VITE_APP_SERVER,
                     url: `/profile/${this.state.favoriteToBeUpdated._id}`,
                     data:  {
                         email: this.state.favoriteToBeUpdated.favorites.email,
@@ -178,7 +178,7 @@ class Profile extends React.Component {
                     <Container>
                         <Col>
                         {this.state.favorites.length ? (
-                            <Card style={{ width: '18rem' }} key={favorite._id}>
+                            <Card style={{ width: '18rem' }} key={favorite._id + 1}>
                                 <Card.Img variant="top" src={this.state.favorites[i].favorites.astroData.astroMap} alt='astroMap' />
                                 <Card.Body>
                                     <Card.Title>{this.props.auth0.name}{this.state.favorites[i].date}</Card.Title>
